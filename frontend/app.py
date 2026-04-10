@@ -5,8 +5,8 @@ import matplotlib.pyplot as plt
 
 st.set_page_config(page_title="Fake News Dashboard", layout="wide")
 
-API_URL = "http://127.0.0.1:8000/predict"
-HISTORY_URL = "http://127.0.0.1:8000/history"
+API_URL = "https://fake-news-detector-tke1.onrender.com/predict"
+HISTORY_URL = "https://fake-news-detector-tke1.onrender.com/history"
 
 st.title("📰 Fake News Detection Dashboard")
 st.write("DistilBERT + FastAPI + MongoDB System")
