@@ -2,24 +2,30 @@ from transformers import DistilBertTokenizerFast, DistilBertForSequenceClassific
 import torch
 import torch.nn.functional as F
 
-# 🔥 LOAD FROM HUGGING FACE
 MODEL_NAME = "sameersethi/fake-news-detector"
 
 print("MODEL LOADING START")
 
-# Load tokenizer from HF
+# 🔥 FORCE CPU
+device = torch.device("cpu")
+
+# Load tokenizer
 tokenizer = DistilBertTokenizerFast.from_pretrained(MODEL_NAME)
 print("TOKENIZER LOADED")
 
-# Load model from HF
-model = DistilBertForSequenceClassification.from_pretrained(MODEL_NAME)
+# Load model (LOW MEMORY MODE)
+model = DistilBertForSequenceClassification.from_pretrained(
+    MODEL_NAME,
+    torch_dtype=torch.float32
+)
+
+model.to(device)
 model.eval()
 
 print("MODEL LOADED")
 print("MODEL READY")
 
 
-# 🔥 PREDICT FUNCTION
 def predict(text):
     inputs = tokenizer(
         text,
@@ -28,6 +34,8 @@ def predict(text):
         padding=True,
         max_length=256
     )
+
+    inputs = {k: v.to(device) for k, v in inputs.items()}
 
     with torch.no_grad():
         outputs = model(**inputs)
