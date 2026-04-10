@@ -2,16 +2,17 @@ from transformers import DistilBertTokenizerFast, DistilBertForSequenceClassific
 import torch
 import torch.nn.functional as F
 
-MODEL_PATH = "model/final_model"
+# 🔥 LOAD FROM HUGGING FACE
+MODEL_NAME = "sameersethi/fake-news-detector"
 
 print("MODEL LOADING START")
 
-# Load tokenizer
-tokenizer = DistilBertTokenizerFast.from_pretrained(MODEL_PATH)
+# Load tokenizer from HF
+tokenizer = DistilBertTokenizerFast.from_pretrained(MODEL_NAME)
 print("TOKENIZER LOADED")
 
-# Load model
-model = DistilBertForSequenceClassification.from_pretrained(MODEL_PATH)
+# Load model from HF
+model = DistilBertForSequenceClassification.from_pretrained(MODEL_NAME)
 model.eval()
 
 print("MODEL LOADED")
