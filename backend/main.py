@@ -50,3 +50,9 @@ def get_history():
         item["_id"] = str(item["_id"])
 
     return data
+
+
+if __name__ == "__main__":
+    import os
+    port = int(os.environ.get("PORT", 10000))
+    uvicorn.run(app, host="0.0.0.0", port=port)
