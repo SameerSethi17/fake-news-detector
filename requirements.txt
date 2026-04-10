@@ -8,5 +8,5 @@ matplotlib
 pandas
 scikit-learn
 
-torch==2.1.0
+torch==2.9.1
 transformers==4.41.2
