@@ -1,13 +1,12 @@
 fastapi
 uvicorn
 pydantic
-pymongo
 requests
+pymongo
 streamlit
 matplotlib
 pandas
 scikit-learn
-
-torch==2.1.0 --extra-index-url https://download.pytorch.org/whl/cpu
 transformers==4.41.2
-tokenizers==0.19.1
+torch==2.1.0+cpu
+--extra-index-url https://download.pytorch.org/whl/cpu
