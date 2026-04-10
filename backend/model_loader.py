@@ -4,29 +4,32 @@ import torch.nn.functional as F
 
 MODEL_NAME = "sameersethi/fake-news-detector"
 
-print("MODEL LOADING START")
-
-# 🔥 FORCE CPU
 device = torch.device("cpu")
 
-# Load tokenizer
-tokenizer = DistilBertTokenizerFast.from_pretrained(MODEL_NAME)
-print("TOKENIZER LOADED")
+tokenizer = None
+model = None
 
-# Load model (LOW MEMORY MODE)
-model = DistilBertForSequenceClassification.from_pretrained(
-    MODEL_NAME,
-    torch_dtype=torch.float32
-)
 
-model.to(device)
-model.eval()
+def load_model():
+    global tokenizer, model
 
-print("MODEL LOADED")
-print("MODEL READY")
+    if tokenizer is None or model is None:
+        print("MODEL LOADING START")
+
+        tokenizer = DistilBertTokenizerFast.from_pretrained(MODEL_NAME)
+        print("TOKENIZER LOADED")
+
+        model = DistilBertForSequenceClassification.from_pretrained(MODEL_NAME)
+        model.to(device)
+        model.eval()
+
+        print("MODEL LOADED")
+        print("MODEL READY")
 
 
 def predict(text):
+    load_model()  # 🔥 lazy loading
+
     inputs = tokenizer(
         text,
         return_tensors="pt",
