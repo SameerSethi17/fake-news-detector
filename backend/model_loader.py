@@ -1,27 +1,30 @@
-from transformers import DistilBertTokenizerFast, DistilBertForSequenceClassification
+import os
 import torch
 import torch.nn.functional as F
+from transformers import DistilBertTokenizerFast, DistilBertForSequenceClassification
 
 MODEL_NAME = "sameersethi/fake-news-detector"
-
 device = torch.device("cpu")
 
-print("MODEL LOADING START (GLOBAL INIT)")
+print("🚀 LOADING MODEL AT STARTUP (DO NOT TOUCH REQUEST TIME)")
 
-# Load once at startup (IMPORTANT for Render stability)
+# FORCE FAST LOAD SETTINGS
+os.environ["HF_HUB_DISABLE_TELEMETRY"] = "1"
+os.environ["TOKENIZERS_PARALLELISM"] = "false"
+
 tokenizer = DistilBertTokenizerFast.from_pretrained(MODEL_NAME)
-model = DistilBertForSequenceClassification.from_pretrained(MODEL_NAME)
+model = DistilBertForSequenceClassification.from_pretrained(
+    MODEL_NAME,
+    low_cpu_mem_usage=True
+)
 
 model.to(device)
 model.eval()
 
-print("MODEL LOADED SUCCESSFULLY")
+print("✅ MODEL READY - SERVER SAFE")
 
 
-# =========================
-# PREDICT FUNCTION
-# =========================
-def predict(text: str):
+def predict(text):
     inputs = tokenizer(
         text,
         return_tensors="pt",
