@@ -6,22 +6,20 @@ from transformers import DistilBertTokenizerFast, DistilBertForSequenceClassific
 MODEL_NAME = "sameersethi/fake-news-detector"
 device = torch.device("cpu")
 
-print("🚀 LOADING MODEL AT STARTUP (DO NOT TOUCH REQUEST TIME)")
+print("🚀 LOADING MODEL AT STARTUP")
 
-# FORCE FAST LOAD SETTINGS
 os.environ["HF_HUB_DISABLE_TELEMETRY"] = "1"
 os.environ["TOKENIZERS_PARALLELISM"] = "false"
 
 tokenizer = DistilBertTokenizerFast.from_pretrained(MODEL_NAME)
-model = DistilBertForSequenceClassification.from_pretrained(
-    MODEL_NAME,
-    low_cpu_mem_usage=True
-)
+
+# ❌ REMOVED low_cpu_mem_usage=True (THIS WAS CRASHING)
+model = DistilBertForSequenceClassification.from_pretrained(MODEL_NAME)
 
 model.to(device)
 model.eval()
 
-print("✅ MODEL READY - SERVER SAFE")
+print("✅ MODEL READY")
 
 
 def predict(text):
