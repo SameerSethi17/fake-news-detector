@@ -6,30 +6,22 @@ MODEL_NAME = "sameersethi/fake-news-detector"
 
 device = torch.device("cpu")
 
-tokenizer = None
-model = None
+print("MODEL LOADING START (GLOBAL INIT)")
+
+# Load once at startup (IMPORTANT for Render stability)
+tokenizer = DistilBertTokenizerFast.from_pretrained(MODEL_NAME)
+model = DistilBertForSequenceClassification.from_pretrained(MODEL_NAME)
+
+model.to(device)
+model.eval()
+
+print("MODEL LOADED SUCCESSFULLY")
 
 
-def load_model():
-    global tokenizer, model
-
-    if tokenizer is None or model is None:
-        print("MODEL LOADING START")
-
-        tokenizer = DistilBertTokenizerFast.from_pretrained(MODEL_NAME)
-        print("TOKENIZER LOADED")
-
-        model = DistilBertForSequenceClassification.from_pretrained(MODEL_NAME)
-        model.to(device)
-        model.eval()
-
-        print("MODEL LOADED")
-        print("MODEL READY")
-
-
-def predict(text):
-    load_model()  # 🔥 lazy loading
-
+# =========================
+# PREDICT FUNCTION
+# =========================
+def predict(text: str):
     inputs = tokenizer(
         text,
         return_tensors="pt",
